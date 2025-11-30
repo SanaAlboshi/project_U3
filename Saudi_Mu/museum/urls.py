@@ -4,6 +4,9 @@ from . import views
 urlpatterns = [
     # Add Museum for specific authority
     path('museum/add/<int:authority_id>/', views.add_museum, name='add_museum'),
+    
+    # Old one still fine for general adding (optional) 
+    path('add/', views.add_museum, name='add_museum_empty'),
 
     path('all/', views.all_del_museum, name='all_del_museum'),
 

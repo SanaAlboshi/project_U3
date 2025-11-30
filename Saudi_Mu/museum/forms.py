@@ -17,16 +17,30 @@ class AuthorityForm(forms.ModelForm):
         }
 
 
-# ============ NEW ============
+# ================= NEW ===================
 
 class MuseumForm(forms.ModelForm):
     class Meta:
         model = Museum
-        fields = ['name', 'image', 'location', 'description']
+        fields = [
+            'name',
+            'image',
+            'location',
+            'description',
+            'open_time',
+            'close_time'
+        ]
 
         widgets = {
             'name': forms.TextInput(attrs={'class': 'authority-input'}),
             'location': forms.TextInput(attrs={'class': 'authority-input'}),
             'description': forms.Textarea(attrs={'class': 'authority-text'}),
             'image': forms.FileInput(attrs={'class': 'authority-file'}),
+
+            'open_time': forms.TimeInput(
+                attrs={'type': 'time', 'class': 'authority-input'}
+            ),
+            'close_time': forms.TimeInput(
+                attrs={'type': 'time', 'class': 'authority-input'}
+            ),
         }

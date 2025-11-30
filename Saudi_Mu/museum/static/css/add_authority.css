@@ -94,6 +94,23 @@
     transform: scale(1.03);
 }
 
+.authority-input[type="time"] {
+    height: 50px;
+    border: 2px solid var(--gold);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 16px;
+    color: var(--bg);
+    background: white;
+}
+
+
+.authority-input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(30%);
+    cursor: pointer;
+}
+
+
 /* RESPONSIVE */
 @media (max-width: 700px) {
     .authority-container {

@@ -41,5 +41,9 @@ class Museum(models.Model):
     location = models.CharField(max_length=150)
     description = models.TextField()
 
+    # ================= NEW FIELDS =================
+    open_time = models.TimeField(null=True, blank=True)
+    close_time = models.TimeField(null=True, blank=True)
+
     def __str__(self):
         return self.name

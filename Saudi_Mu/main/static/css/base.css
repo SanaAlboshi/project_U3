@@ -1,7 +1,7 @@
 :root {
-    --bg: #3C0D29;     
-    --gold: #C6A667;   
-    --beige: #EEE2CC;  
+    --bg: #3C0D29;
+    --gold: #C6A667;
+    --beige: #EEE2CC;
 }
 
 /* BODY */
@@ -20,23 +20,45 @@ body {
     align-items: center;
     border-bottom: 4px solid var(--gold);
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-
-    /* جعل الشريط ثابت */
     position: sticky;
     top: 0;
     z-index: 999;
+    direction: ltr;
 }
 
-/* LOGO */
+/* ------------- توزيع احترافي ---------------- */
+
+/* الآن نبدل بين اليسار واليمين */
+.base-left {
+    order: 1; /* Saudi Museum */
+    margin-left: 20px;
+}
+
+.base-center {
+    order: 2;
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    gap: 25px;
+}
+
+.base-right {
+    order: 3; /* Icons */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-right: 20px;
+}
+
+/* ----------- LOGO ----------- */
 .base-logo {
     color: var(--gold);
     font-size: 28px;
     font-weight: 700;
 }
 
-/* CENTER LINKS */
+/* ---------- LINKS ---------- */
 .base-center a {
-    margin: 0 15px;
     text-decoration: none;
     font-size: 17px;
     color: var(--gold);
@@ -49,13 +71,7 @@ body {
     text-shadow: 0 0 5px rgba(255,255,255,0.7);
 }
 
-/* RIGHT ICONS */
-.base-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
+/* ----------- ICONS ---------- */
 .icon-btn {
     padding: 10px;
     border: 2px solid var(--gold);
@@ -71,7 +87,6 @@ body {
     fill: none;
 }
 
-/* HOVER */
 .icon-btn:hover {
     background: var(--gold);
     transform: scale(1.12);
@@ -81,7 +96,7 @@ body {
     stroke: var(--bg);
 }
 
-/* RESPONSIVE */
+/* -------- Responsive -------- */
 @media(max-width: 800px){
     .base-center {
         display: none;

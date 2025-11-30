@@ -1,0 +1,111 @@
+{% load static %}
+
+
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الهيئات والمتاحف</title>
+
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- قسم الصورة + العنوان + البحث -->
+    <header class="hero">
+        <h1>الهيئات والمتاحف</h1>
+        <p>اكتشف أبرز الهيئات والمتاحف في المملكة</p>
+
+        <div class="search-box">
+            <input type="text" placeholder="ابحث عن هيئة أو متحف...">
+            <button>بحث</button>
+        </div>
+    </header>
+
+    <!-- قسم 3 هيئات -->
+    <section class="authorities">
+        <h2>الهيئات</h2>
+
+        <div class="authorities-grid">
+            <div class="authority-card">
+                <img src="img/authority1.jpg" alt="">
+                <h3>اسم الهيئة الأولى</h3>
+            </div>
+
+            <div class="authority-card">
+                <img src="img/authority2.jpg" alt="">
+                <h3>اسم الهيئة الثانية</h3>
+            </div>
+
+            <div class="authority-card">
+                <img src="img/authority3.jpg" alt="">
+                <h3>اسم الهيئة الثالثة</h3>
+            </div>
+        </div>
+
+        <button class="view-all">جميع الهيئات</button>
+    </section>
+
+    <!-- قسم نص + صورة -->
+    <!-- Welcome Section -->
+    <section class="welcome">
+        <div class="welcome-container">
+            <div class="welcome-text">
+                <h2>مرحباً بكم في رحلة التراث السعودي</h2>
+                <p>المملكة العربية السعودية تمتلك تاريخاً عريقاً وتراثاً ثقافياً غنياً يمتد لآلاف السنين. من خلال هيئاتنا ومتاحفنا، نحرص على الحفاظ على هذا الإرث العظيم وتقديمه للأجيال القادمة.</p>
+                <p>نسعى لتوثيق وعرض جميع جوانب التراث السعودي من الآثار القديمة إلى الفنون الشعبية، ومن العمارة التقليدية إلى الحرف اليدوية الأصيلة.</p>
+                <a href="#" class="btn-primary">اكتشف المزيد</a>
+            </div>
+            <div class="welcome-image">
+                معرض التراث السعودي
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم المتاحف -->
+    <section class="museums">
+        <h2>المتاحف</h2>
+
+        <div class="museums-grid">
+
+            <div class="museum-card">
+                <img src="img/m1.jpg" alt="">
+                <h3>اسم المتحف</h3>
+            </div>
+
+            <div class="museum-card">
+                <img src="img/m2.jpg" alt="">
+                <h3>اسم المتحف</h3>
+            </div>
+
+            <div class="museum-card">
+                <img src="img/m3.jpg" alt="">
+                <h3>اسم المتحف</h3>
+            </div>
+
+            <div class="museum-card">
+                <img src="img/m4.jpg" alt="">
+                <h3>اسم المتحف</h3>
+            </div>
+
+            <div class="museum-card">
+                <img src="img/m5.jpg" alt="">
+                <h3>اسم المتحف</h3>
+            </div>
+
+            <div class="museum-card">
+                <img src="img/m6.jpg" alt="">
+                <h3>اسم المتحف</h3>
+            </div>
+
+        </div>
+
+        <button class="view-all">جميع المتاحف</button>
+    </section>
+
+</body>
+</html>

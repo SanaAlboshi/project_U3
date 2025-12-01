@@ -1,0 +1,66 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Booking{% endblock %}
+
+{% block content %}
+
+
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/booking.css' %}">
+
+
+<div class="container my-5">
+    <div class="card shadow p-4">
+        <h2 class="text-center mb-3 text-dark">Book a Museum Visit</h2>
+        <p class="text-center text-secondary mb-4">Fill in your details and choose your museum visit schedule.</p>
+
+        <form method="POST" action="{% url 'booking' %}">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Your Name:</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ request.user.first_name }} {{ request.user.last_name }}" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ request.user.email }}" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="authority" class="form-label">Select Authority:</label>
+                <select name="authority" id="authority" class="form-select" required>
+                    {% for authority in authorities %}
+                        <option value="{{ authority.id }}">{{ authority.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="museum" class="form-label">Select Museum:</label>
+                <select name="museum" id="museum" class="form-select" required>
+                    {% for museum in museums %}
+                        <option value="{{ museum.id }}">{{ museum.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="date" class="form-label">Select Date:</label>
+                <input type="date" class="form-control" name="date" id="date" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="time" class="form-label">Select Time:</label>
+                <input type="time" class="form-control" name="time" id="time" required>
+            </div>
+
+            <button type="submit" class="btn btn-dark w-100">Book Now</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,109 +1,71 @@
 {% extends 'main/base.html' %}
 {% load static %}
-
-{% block title %}Profile for {{ user.username }}{% endblock %}
-
+{% block title %}Update {{ request.user.username }}{% endblock %}
 {% block content %}
-<div class="container-fluid" style="background-color: #F2E9D8; min-height: 100vh; padding: 50px 15px;">
-    <div class="row justify-content-center">
 
-        <!-- Sidebar -->
-        <div class="col-lg-3 col-md-4 mb-4">
-            <div class="card shadow-sm border-0 text-center p-4" style="border-radius: 25px; background: #fff;">
-                <div class="position-relative">
-                    <img src="{{ user.profile.avatar.url }}" 
-                         class="rounded-circle mx-auto mb-3 border border-3" 
-                         style="width: 140px; height: 140px; object-fit: cover; border-color:#4A0E2E;">
+
+
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <div class="container my-5">
+        <!-- Profile Card -->
+        <div class="card card-custom p-4 mb-4">
+            <div class="row g-4 align-items-center">
+                <!-- Avatar Left -->
+                <div class="col-md-3 text-center">
+                    <img src="{% if profile.avatar %}{{ profile.avatar.url }}{% else %}{% static 'images/avatar.jpg' %}{% endif %}" 
+                         alt="Avatar" class="profile-img mb-3">
+                    <a href="{% url 'account:update_user_profile' %}" class="btn btn-primary btn-sm w-100">Update Profile</a>
                 </div>
-                <h4 class="mb-1">{{ user.first_name }} {{ user.last_name }}</h4>
-                <p class="text-muted small mb-3">@{{ user.username }}</p>
-                
-                <div class="d-flex justify-content-around mb-3 px-4">
-                    <div>
-                        <h6>{{ user.bookmark_set.count }}</h6>
-                        <small class="text-muted">Bookmarks</small>
+                <!-- About Me Right -->
+                <div class="col-md-9">
+                    <h4>{{ user.first_name }} {{ user.last_name }}</h4>
+                    <p class="text-muted">{{ user.email }}</p>
+                    <div class="about-me mt-2">
+                        <h5>About Me</h5>
+                        <p>{{ profile.about|default:"No information added yet." }}</p>
                     </div>
-                    <div>
-                        <h6>{{ user.profile.visited_museums.count }}</h6>
-                        <small class="text-muted">Visited Museums</small>
-                    </div>
-                </div>
-
-                {% if request.user == user %}
-                <a href="{% url 'account:update_user_profile' %}" 
-                   class="btn w-100" 
-                   style="background:#4A0E2E; color:white; border-radius:15px;">Edit Profile</a>
-                {% endif %}
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="col-lg-7 col-md-8">
-            <div class="card shadow-sm border-0" style="border-radius: 25px; background:#fff;">
-                <div class="card-body p-5">
-                    
-                    <!-- User Stats -->
-                    <div class="row text-center mb-4">
-                        <div class="col">
-                            <h5 class="mb-0">{{ user.bookmark_set.count }}</h5>
-                            <small class="text-muted">Bookmarks</small>
-                        </div>
-                        <div class="col">
-                            <h5 class="mb-0">{{ user.profile.favorite_museums.count }}</h5>
-                            <small class="text-muted">Favorite Museums</small>
-                        </div>
-                        <div class="col">
-                            <h5 class="mb-0">{{ user.profile.visited_museums.count }}</h5>
-                            <small class="text-muted">Visited Museums</small>
-                        </div>
-                    </div>
-
-                    <!-- About Section -->
-                    <div class="mb-4">
-                        <h5 style="color:#4A0E2E;">About {{ user.first_name }}</h5>
-                        <p class="text-muted">{{ user.profile.about|default:"This user hasn't added an about section yet." }}</p>
-                    </div>
-
-                    <!-- Favorite Museums -->
-                    <div class="mb-4">
-                        <h5 style="color:#4A0E2E;">Favorite Museums</h5>
-                        {% if user.profile.favorite_museums.all %}
-                        <div class="row">
-                            {% for museum in user.profile.favorite_museums.all %}
-                            <div class="col-md-6 mb-2">
-                                <div class="p-3 border rounded" style="background:#fdf6e3;">
-                                    {{ museum.name }}
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                        <p class="text-muted">No favorite museums selected.</p>
-                        {% endif %}
-                    </div>
-
-                    <!-- Visited Museums -->
-                    <div>
-                        <h5 style="color:#4A0E2E;">Museums Visited ({{ user.profile.visited_museums.count }})</h5>
-                        {% if user.profile.visited_museums.all %}
-                        <div class="row">
-                            {% for museum in user.profile.visited_museums.all %}
-                            <div class="col-md-6 mb-2">
-                                <div class="p-3 border rounded" style="background:#fdf6e3;">
-                                    {{ museum.name }}
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                        <p class="text-muted">This user hasn't visited any museums yet.</p>
-                        {% endif %}
-                    </div>
-
                 </div>
             </div>
         </div>
 
+        <!-- Stats Cards -->
+        <div class="row g-3 mb-4 text-center">
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <h3>{{ visited_museums_count }}</h3>
+                    <p>Visited Museums</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <h3>{{ bookmarks_count }}</h3>
+                    <p>Bookmarks</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <h3>{{ user_comments|length }}</h3>
+                    <p>Comments</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="comments-card">
+            <h5 class="mb-3">Recent Comments</h5>
+            {% if user_comments %}
+                <ul class="list-group list-group-flush">
+                    {% for comment in user_comments %}
+                        <li class="list-group-item">
+                            {{ comment.text }}
+                            <small class="text-muted d-block">{{ comment.created_at|date:"Y-m-d H:i" }}</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted mb-0">No comments yet.</p>
+            {% endif %}
+        </div>
     </div>
-</div>
-{% endblock %}
+
+ {% endblock %}

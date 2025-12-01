@@ -1,0 +1,15 @@
+body {
+    background-color: #ecebe5; /* لون خلفية الصفحة */
+}
+
+.card {
+    background-color: #ffffffa0; /* لون البطاقة */
+}
+
+.btn-dark {
+    background-color: #291111; /* لون الزر */
+}
+
+.btn-dark:hover {
+    background-color: #3f2727; /* لون عند المرور بالماوس */
+}

@@ -1,52 +1,57 @@
 {% extends 'main/base.html' %}
 {% load static %}
-
-{% block title %}Update Profile{% endblock %}
-
+{% block title %}Update {{ request.user.username }}{% endblock %}
 {% block content %}
-<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color: #f0f2f5;">
-    <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%; border-radius: 15px;">
-        <h2 class="mb-4 text-center">Update Profile</h2>
 
-        <!-- Django messages -->
-        {% if messages %}
-        <div class="mb-3">
-            {% for message in messages %}
-                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        </div>
-        {% endif %}
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
 
-        <form class="d-flex flex-column gap-3" action="{% url 'account:update_user_profile' %}" method="POST" enctype="multipart/form-data">
+
+
+<div class="signup-box">
+
+    <div class="side-image"></div>
+
+    <div class="form-container">
+
+        <h2>Update Your Profile</h2>
+        <p class="desc">Fill in the information below to update your profile details.</p>
+
+        <form action="{% url 'account:update_user_profile' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
-            <div class="form-floating">
-                <input type="text" class="form-control" id="floatingFirstName" placeholder="First Name" name="first_name" required value="{{ user.first_name }}">
-                <label for="floatingFirstName">First Name</label>
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" name="email" value="{{ request.user.email }}" required>
             </div>
 
-            <div class="form-floating">
-                <input type="text" class="form-control" id="floatingLastName" placeholder="Last Name" name="last_name" required value="{{ user.last_name }}">
-                <label for="floatingLastName">Last Name</label>
+            <div class="input-group">
+                <label>First Name</label>
+                <input type="text" name="first_name" value="{{ request.user.first_name }}" required>
             </div>
 
-            <div class="form-floating">
-                <input type="email" class="form-control" id="floatingEmail" placeholder="Email" name="email" required value="{{ user.email }}">
-                <label for="floatingEmail">Email</label>
+            <div class="input-group">
+                <label>Last Name</label>
+                <input type="text" name="last_name" value="{{ request.user.last_name }}" required>
             </div>
 
-            <textarea class="form-control" placeholder="About yourself" name="about" rows="3">{{ user.profile.about }}</textarea>
-
-            <div class="mb-3">
-                <label for="avatar" class="form-label">Choose Avatar</label>
-                <input type="file" class="form-control" id="avatar" name="avatar" accept="image/*">
+            <div class="input-group">
+                <label>About Me</label>
+                <textarea name="about">{{ request.user.profile.about }}</textarea>
             </div>
 
-            <button class="btn btn-primary w-100 py-2 mt-2" type="submit" style="border-radius: 10px;">Update Profile</button>
+            <div class="input-group">
+                <label>Profile Picture</label>
+                {% if request.user.profile.avatar %}
+                    <img src="{{ request.user.profile.avatar.url }}" class="rounded-3 mb-2" style="width:120px; height:120px; object-fit:cover; border:3px solid #4A0E2E;">
+                {% endif %}
+                <input type="file" name="avatar" accept="image/*">
+            </div>
+
+            <button class="submit-btn" type="submit">Update Profile</button>
         </form>
+
     </div>
 </div>
+
+
 {% endblock %}

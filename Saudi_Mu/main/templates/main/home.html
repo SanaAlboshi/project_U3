@@ -1,114 +1,54 @@
-{% extends 'main/base.html' %}
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Saudi Museums & Cultural Hubs{% endblock %}
 
 {% block content %}
 
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الهيئات والمتاحف</title>
 
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
 
-    <!-- قسم الصورة + العنوان + البحث -->
-    <header class="hero">
-        <h1>الهيئات والمتاحف</h1>
-        <p>اكتشف أبرز الهيئات والمتاحف في المملكة</p>
 
-        <div class="search-box">
-            <input type="text" placeholder="ابحث عن هيئة أو متحف...">
-            <button>بحث</button>
+
+
+<!-- Hero Section -->
+<header class="hero">
+    <div class="hero-content">
+        <h1>Discover Saudi Arabia’s Museums and Cultural Hubs</h1>
+        <p>Explore the museums and cultural centers across the Kingdom</p>
+<form class="search-box" action="{% url 'search' %}" method="GET">
+            <input type="text" name="q" placeholder="Search for an authority or museum..." required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+</header>
+
+
+<!-- Museum Introduction Section -->
+<section class="museum-intro container">
+    <div class="intro-box">
+        <div class="intro-text">
+            <h2>Museum Highlights in Saudi Arabia</h2>
+            <p>
+                We are delighted to have you here, and we aim to provide an exceptional experience that helps you discover the most prominent cultural and heritage landmarks across the Kingdom.
+                Here, you will find museums showcasing ancient civilizations, museums highlighting national identity, and others presenting traditional heritage and arts — in addition to modern museums that explore 
+                scientific and technological advancements.
+            </p>
         </div>
-    </header>
-
-    <!-- قسم 3 هيئات -->
-    <section class="authorities">
-        <h2>الهيئات</h2>
-
-        <div class="authorities-grid">
-            <div class="authority-card">
-                <img src="img/authority1.jpg" alt="">
-                <h3>اسم الهيئة الأولى</h3>
-            </div>
-
-            <div class="authority-card">
-                <img src="img/authority2.jpg" alt="">
-                <h3>اسم الهيئة الثانية</h3>
-            </div>
-
-            <div class="authority-card">
-                <img src="img/authority3.jpg" alt="">
-                <h3>اسم الهيئة الثالثة</h3>
-            </div>
+        <div class="intro-image">
+            <img src="{% static 'image/pho.jpg' %}" alt="Museum Highlights">
         </div>
+    </div>
+</section>
 
-        <button class="view-all">جميع الهيئات</button>
-    </section>
 
-    <!-- قسم نص + صورة -->
-    <!-- Welcome Section -->
-    <section class="welcome">
-        <div class="welcome-container">
-            <div class="welcome-text">
-                <h2>مرحباً بكم في رحلة التراث السعودي</h2>
-                <p>المملكة العربية السعودية تمتلك تاريخاً عريقاً وتراثاً ثقافياً غنياً يمتد لآلاف السنين. من خلال هيئاتنا ومتاحفنا، نحرص على الحفاظ على هذا الإرث العظيم وتقديمه للأجيال القادمة.</p>
-                <p>نسعى لتوثيق وعرض جميع جوانب التراث السعودي من الآثار القديمة إلى الفنون الشعبية، ومن العمارة التقليدية إلى الحرف اليدوية الأصيلة.</p>
-                <a href="#" class="btn-primary">اكتشف المزيد</a>
-            </div>
-            <div class="welcome-image">
-                معرض التراث السعودي
-            </div>
-        </div>
-    </section>
+<!-- Authorities Section -->
+<section class="authorities container">
 
-    <!-- قسم المتاحف -->
-    <section class="museums">
-        <h2>المتاحف</h2>
+</section>
 
-        <div class="museums-grid">
 
-            <div class="museum-card">
-                <img src="img/m1.jpg" alt="">
-                <h3>اسم المتحف</h3>
-            </div>
 
-            <div class="museum-card">
-                <img src="img/m2.jpg" alt="">
-                <h3>اسم المتحف</h3>
-            </div>
 
-            <div class="museum-card">
-                <img src="img/m3.jpg" alt="">
-                <h3>اسم المتحف</h3>
-            </div>
-
-            <div class="museum-card">
-                <img src="img/m4.jpg" alt="">
-                <h3>اسم المتحف</h3>
-            </div>
-
-            <div class="museum-card">
-                <img src="img/m5.jpg" alt="">
-                <h3>اسم المتحف</h3>
-            </div>
-
-            <div class="museum-card">
-                <img src="img/m6.jpg" alt="">
-                <h3>اسم المتحف</h3>
-            </div>
-
-        </div>
-
-        <button class="view-all">جميع المتاحف</button>
-    </section>
-
-</body>
-</html>
 
 {% endblock %}

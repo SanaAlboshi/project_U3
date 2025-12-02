@@ -1,169 +1,137 @@
-/* إعدادات عامة */
-body {
-    font-family: "Tahoma", sans-serif;
-    background-color: #f4f1e9; /* البيج مثل الصورة */
+/* Reset */
+* {
     margin: 0;
     padding: 0;
-    color: #333;
+    box-sizing: border-box;
 }
 
-h1, h2, h3 {
-    margin: 0;
+body {
+    font-family: "Tajawal", sans-serif;
 }
 
-/* ====== قسم الهيدر مع الصورة ====== */
-
+/* Hero Section */
 .hero {
-    background: url("../image/mus.jpg") center/cover no-repeat;
-    height: 430px;
+    background: url("../image/main.jpg") no-repeat center center;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    position: relative;
+    color: #fff;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    top:0; left:0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    z-index:0;
+}
+
+.hero-content {
+    position: relative;
+    z-index:1;
     text-align: center;
-    color: white;
-    padding: 20px;
+    max-width: 600px;
 }
 
 .hero h1 {
-    font-size: 42px;
-    font-weight: bold;
-}
-
-.hero p {
-    margin-top: 10px;
-    font-size: 18px;
-}
-
-/* مربع البحث */
-
-.search-box {
-    margin-top: 25px;
-    display: flex;
-    gap: 10px;
-}
-
-.search-box input {
-    padding: 12px;
-    width: 260px;
-    border-radius: 6px;
-    border: none;
-}
-
-.search-box button {
-    padding: 12px 18px;
-    border: none;
-    border-radius: 6px;
-    background-color: black;
-    color: white;
-    cursor: pointer;
-}
-
-/* ====== قسم الهيئات ====== */
-
-section {
-    padding: 60px 8%;
-}
-
-/* عنوان القسم */
-section h2 {
-    font-size: 26px;
-    margin-bottom: 25px;
-}
-
-/* شبكة عرض العناصر */
-.authorities-grid,
-.museums-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
-}
-
-.authority-card,
-.museum-card {
-    background-color: white;
-    border-radius: 10px;
-    overflow: hidden;
-    text-align: center;
-    box-shadow: 0 0 10px rgba(0,0,0,0.06);
-}
-
-.authority-card img,
-.museum-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-
-.authority-card h3,
-.museum-card h3 {
-    padding: 15px;
-    font-size: 16px;
-}
-
-/* زر "جميع الهيئات" و "جميع المتاحف" */
-.view-all {
-    margin-top: 30px;
-    display: block;
-    padding: 12px 25px;
-    background: black;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-/* ====== قسم النص + الصورة ====== */
-
-.info-section {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-    padding: 70px 8%;
-}
-
-.info-section img {
-    width: 100%;
-    max-width: 450px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.06);
-}
-
-.info-text h2 {
-    font-size: 28px;
+    font-size: 48px;
     margin-bottom: 15px;
 }
 
-.info-text p {
+.hero p {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.search-box input {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: none;
+    width: 250px;
+    font-size: 16px;
+}
+
+.search-box button {
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    background-color: #e5e4d8;
+    color: #000;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.search-box button:hover {
+    background-color: #a09b89;
+}
+
+
+
+
+
+
+
+.museum-intro.container {
+    padding: 60px 20px;
+}
+
+.intro-box {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    background: #f4f3ea;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.intro-text {
+    flex: 1;
+}
+
+.intro-text h2 {
+    font-size: 28px;
+    color: #4A0E2E;
+    margin-bottom: 15px;
+}
+
+.intro-text p {
+    font-size: 16px;
+    line-height: 1.6;
     color: #555;
-    line-height: 1.7;
 }
 
-/* ====== استجابة الشاشات ====== */
+.intro-image {
+    flex: 1;
+}
 
-@media(max-width: 900px) {
-    .authorities-grid,
-    .museums-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.intro-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
 
-    .info-section {
+/* Responsive */
+@media(max-width: 768px) {
+    .intro-box {
         flex-direction: column;
+        text-align: center;
+    }
+
+    .intro-image img {
+        height: 250px;
     }
 }
-
-@media(max-width: 600px) {
-    .authorities-grid,
-    .museums-grid {
-        grid-template-columns: repeat(1, 1fr);
-    }
-
-    .hero h1 {
-        font-size: 30px;
-    }
-}
-
-
-
-
 

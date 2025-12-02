@@ -5,15 +5,19 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db import IntegrityError, transaction
 from .models import Profile
-
+from django.db import transaction
+from django.core.mail import send_mail
+from django.conf import settings
 # -----------------------------
 # Sign Up
 # -----------------------------
+
+
 def sign_up(request: HttpRequest):
     if request.method == "POST":
         try:
             with transaction.atomic():
-                # إنشاء المستخدم
+                # Create the user
                 new_user = User.objects.create_user(
                     username=request.POST["username"],
                     password=request.POST["password"],
@@ -23,7 +27,7 @@ def sign_up(request: HttpRequest):
                 )
                 new_user.save()
 
-                # إنشاء البروفايل
+                # Create the profile
                 avatar = request.FILES.get("avatar")
                 if not avatar:
                     avatar = Profile.avatar.field.get_default()
@@ -33,15 +37,24 @@ def sign_up(request: HttpRequest):
                     avatar=avatar
                 )
 
-            # تسجيل الدخول مباشرة بعد التسجيل
+            # Send welcome email
+            send_mail(
+                subject="Successfully registered on our site",
+                message=f"Hello {new_user.first_name},\n\nYou have successfully registered on our site . Welcome!",
+                from_email=settings.DEFAULT_FROM_EMAIL,  
+                recipient_list=[new_user.email],
+                fail_silently=False,
+            )
+
+            # Automatically log in the user
             login(request, new_user)
-            messages.success(request, "Registered and logged in successfully!")
+            messages.success(request, "Registered and logged in successfully! Check your email.")
             return redirect("account:user_profile_view", user_name=new_user.username)
 
         except IntegrityError:
-            messages.error(request, "Username already exists, please choose another.")
+            messages.error(request, "Username already exists. Please choose another.")
         except Exception as e:
-            messages.error(request, "Couldn't register user. Try again.")
+            messages.error(request, "Could not register the user. Please try again.")
             print(e)
 
     return render(request, "account/signup.html")
@@ -66,41 +79,55 @@ def sign_in(request: HttpRequest):
 
     return render(request, "account/signin.html")
 
-
 # -----------------------------
 # Log Out
 # -----------------------------
+
 def log_out(request: HttpRequest):
     logout(request)
     messages.success(request, "Logged out successfully")
     return redirect(request.GET.get("next", "/"))
 
-
 # -----------------------------
 # User Profile View
 # -----------------------------
+
 def user_profile_view(request: HttpRequest, user_name):
     try:
         user = User.objects.get(username=user_name)
-        # إنشاء بروفايل إذا ما موجود
-        if not hasattr(user, 'profile'):
-            Profile.objects.create(user=user)
+        # تأكد من وجود البروفايل
+        profile, created = Profile.objects.get_or_create(user=user)
+
+        # حساب الإحصائيات (بداية بصفر)
+        visited_museums_count = getattr(profile, "visited_museums_count", 0)
+        bookmarks_count = getattr(profile, "bookmarks_count", 0)
+        user_comments = getattr(profile, "user_comments", [])
+
     except User.DoesNotExist:
         return render(request, '404.html')
 
-    return render(request, 'account/profile.html', {"user": user})
-
+    context = {
+        "user": user,
+        "profile": profile,
+        "visited_museums_count": visited_museums_count,
+        "bookmarks_count": bookmarks_count,
+        "user_comments": user_comments,
+    }
+    return render(request, 'account/profile.html', context)
 
 # -----------------------------
 # Update Profile
 # -----------------------------
-def update_user_profile(request: HttpRequest):
+
+def update_user_profile(request):
     if not request.user.is_authenticated:
         messages.warning(request, "Only registered users can update their profile", "alert-warning")
         return redirect("account:sign_in")
 
-    user: User = request.user
-    profile: Profile = user.profile
+    user = request.user
+
+    # تأكد أن البروفايل موجود
+    profile, created = Profile.objects.get_or_create(user=user)
 
     if request.method == "POST":
         try:
@@ -113,8 +140,7 @@ def update_user_profile(request: HttpRequest):
 
                 # تحديث بيانات البروفايل
                 profile.about = request.POST.get("about", profile.about)
-                profile.twitch_link = request.POST.get("twitch_link", profile.twitch_link)
-                if "avatar" in request.FILES:
+                if request.FILES.get("avatar"):
                     profile.avatar = request.FILES["avatar"]
                 profile.save()
 
@@ -123,9 +149,8 @@ def update_user_profile(request: HttpRequest):
 
         except Exception as e:
             messages.error(request, "Couldn't update profile. Try again.", "alert-danger")
-            print(e)
+            print("Error updating profile:", e)
 
-    # GET request => عرض الصفحة مع البيانات الحالية
     context = {
         "user": user,
         "profile": profile

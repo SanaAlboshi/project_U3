@@ -4,7 +4,8 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Saudi Museum</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Saudi Museum{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     {% block extra_css %}{% endblock %}
 
@@ -26,86 +27,106 @@
     </div>
 
     <div class="base-right">
-        <a class="icon-btn" href="{% url 'account:sign_in' %}">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <circle cx="12" cy="7" r="4"></circle>
-                <path d="M12 14c-5 0-8 2.5-8 5v2"></path>
-            </svg>
-        </a>
 
-        <a class="icon-btn" href="{% url 'account:sign_up' %}">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <circle cx="12" cy="7" r="4"></circle>
-                <path d="M12 14c-5 0-8 2.5-8 5v2"></path>
-                <path d="M19 12v6"></path>
-                <path d="M16 15h6"></path>
-            </svg>
-        </a>
+        <!-- Language Dropdown -->
+        <div class="dropdown">
+            <button class="icon-btn" id="languageBtn">🌐</button>
+            <div class="dropdown-content">
+                <button onclick="doTranslate('en')">English</button>
+                <button onclick="doTranslate('ar')">العربية</button>
+            </div>
+        </div>
 
-        <a class="icon-btn" href="{% url 'account:log_out' %}">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <polyline points="16 17 21 12 16 7"></polyline>
-                <line x1="21" y1="12" x2="9" y2="12"></line>
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-            </svg>
-        </a>
+        {% if user.is_authenticated %}
+            <!-- Show profile if user has avatar -->
+            {% if user.profile.avatar %}
+                <a class="profile-link" href="{% url 'account:user_profile_view' user_name=user.username %}">
+                    <img src="{{ user.profile.avatar.url }}" alt="Avatar" class="nav-avatar">
+                    <span class="nav-username">{{ user.username }}</span>
+                </a>
+            {% endif %}
+
+            <!-- LOGOUT - Only shown when logged in -->
+            <a class="icon-btn" href="{% url 'account:log_out' %}">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+            </a>
+        {% else %}
+            <!-- SIGN IN - Only shown when NOT logged in -->
+            <a class="icon-btn" href="{% url 'account:sign_in' %}">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="4"></circle>
+                    <path d="M2 12h14"></path>
+                    <path d="M8 8l-6 4 6 4"></path>
+                </svg>
+            </a>
+            
+            <!-- SIGN UP - Only shown when NOT logged in -->
+            <a class="icon-btn" href="{% url 'account:sign_up' %}">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                    <circle cx="12" cy="7" r="4"></circle>
+                    <path d="M12 14c-5 0-8 2.5-8 5v2"></path>
+                    <path d="M19 12v6"></path>
+                    <path d="M16 15h6"></path>
+                </svg>
+            </a>
+        {% endif %}
+
     </div>
 </nav>
 
 
 {% block content %}{% endblock %}
 
-<footer class="footer">
+<!-- Google Translate Hidden -->
+<div id="google_translate_element" style="display:none;"></div>
 
-    <div class="footer-container">
+<script type="text/javascript">
+function googleTranslateElementInit() {
+    new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+}
 
-        <!-- لاحظي فقط أضفت social هنا -->
-        <div class="footer-section social">
-            <h4>Social Media</h4>
+// Additional script to remove Google Translate bar
+window.addEventListener('load', function() {
+    var translateBar = document.querySelector('.goog-te-banner-frame');
+    if (translateBar) {
+        translateBar.style.display = 'none';
+    }
+    
+    document.body.style.top = '0';
+    document.body.style.position = 'static';
+});
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-            <div class="footer-icons">
+<script>
+const dropdown = document.querySelector('.dropdown');
+const btn = document.getElementById('languageBtn');
 
-                <a href="{% url 'contact_us' %}">
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <rect x="3" y="5" width="18" height="14" rx="2"></rect>
-                        <polyline points="3 7 12 13 21 7"></polyline>
-                    </svg>
-                </a>
+btn.addEventListener('click', () => {
+    dropdown.classList.toggle('show');
+});
 
-                <a href="#">
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M23 3c-1 .5-2 .7-3 1a4.5 4.5 0 0 0-7.7 4A12.8 12.8 0 0 1 3 4s-4 9 5 13c-3 .9-5 .8-7 1 9 5 20 0 20-11"></path>
-                    </svg>
-                </a>
+function doTranslate(lang) {
+    document.cookie = "googtrans=/en/" + lang + ";path=/";
+    location.reload();
+}
 
-                <a href="#">
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <rect x="2" y="2" width="20" height="20" rx="5"></rect>
-                        <path d="M16 11.37A4 4 0 1112.63 8"></path>
-                    </svg>
-                </a>
-
-            </div>
-        </div>
-
-        <div class="footer-section left-align">
-            <h4>Links</h4>
-            <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'add_authority' %}">Add Authority</a>
-            <a href="{% url 'all_del_museum' %}">All Museums</a>
-            <a href="{% url 'contact_us' %}">Contact Us</a>
-        </div>
-
-        <div class="footer-section left-align">
-            <h3>Saudi Museum</h3>
-            <p>A platform for discovering the best museums and institutions in Saudi Arabia</p>
-        </div>
-
-    </div>
-
-    <p class="footer-end">جميع الحقوق محفوظة 2025 © Saudi Museum</p>
-
-</footer>
+document.addEventListener('click', function(event) {
+    if (!dropdown.contains(event.target)) {
+        dropdown.classList.remove('show');
+    }
+});
+</script>
 
 </body>
 </html>
